@@ -79,8 +79,8 @@
         '';
       };
       haddock-style-module = mkOption {
-        type = types.enum ["null" "single-line" "multi-line" "multi-line-compact"];
-        default = "null";
+        type = types.enum ["single-line" "multi-line" "multi-line-compact"];
+        default = "multi-line";
         description = ''
           How to print module docstring
         '';
@@ -120,18 +120,20 @@
           Give the programmer more choice on where to insert blank lines
         '';
       };
-      # fixities = mkOption {
-      #   type = types.either (types.enum ["none"]) types.ints.positive;
-      #   description = ''
-      #     Output Unicode syntax
-      #   '';
-      # };
-      # reexports = mkOption {
-      #   type = types.either (types.enum ["none"]) types.ints.positive;
-      #   description = ''
-      #     Module reexports Fourmolu should know about
-      #   '';
-      # };
+      extensions = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = ''
+          List of ghc extensions to pass to fourmolu
+        '';
+      };
+      options = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = ''
+          Fourmolu options to pass to wrapped fourmolu
+        '';
+      };
     };
   };
 in {
@@ -157,12 +159,47 @@ in {
       '';
       type = types.package;
       defaultText = lib.literalMD "wrapped `fourmolu` command";
-      default = pkgs.writeShellScriptBin "fourmolu" ''
-        exec ${config.package}/bin/fourmolu \
-          --indentation=${builtins.toString config.settings.indentation} \
-          --column-limit=${builtins.toString config.settings.column-limit} \
-          "$@"
-      '';
+      readOnly = true;
     };
+  };
+
+  config = {
+    settings.options =
+      [
+        "--indentation"
+        (builtins.toString config.settings.indentation)
+        "--column-limit"
+        (builtins.toString config.settings.column-limit)
+        "--function-arrows"
+        config.settings.function-arrows
+        "--comma-style"
+        config.settings.comma-style
+        "--import-export-style"
+        config.settings.import-export-style
+        "--indent-wheres"
+        (lib.boolToString config.settings.indent-wheres)
+        "--record-brace-space"
+        (lib.boolToString config.settings.record-brace-space)
+        "--newlines-between-decls"
+        (builtins.toString config.settings.newlines-between-decls)
+        "--haddock-style"
+        config.settings.haddock-style
+        "--haddock-style-module"
+        config.settings.haddock-style-module
+        "--let-style"
+        config.settings.let-style
+        "--in-style"
+        config.settings.in-style
+        "--single-constraint-parens"
+        config.settings.single-constraint-parens
+        "--unicode"
+        config.settings.unicode
+        "--respectful"
+        (lib.boolToString config.settings.respectful)
+      ]
+      ++ builtins.concatMap (e: ["--ghc-opt" "-X${e}"]) config.settings.extensions;
+    wrapper = pkgs.writeShellScriptBin "fourmolu" ''
+      exec ${config.package}/bin/fourmolu ${builtins.concatStringsSep " " config.settings.options} "$@"
+    '';
   };
 }

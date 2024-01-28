@@ -28,6 +28,7 @@ in {
             specialArgs = {inherit pkgs;};
             modules = [./modules];
           };
+          default = {};
         };
       };
     });
