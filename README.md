@@ -1,4 +1,10 @@
-## Integration into Nix
+# fourmolu-nix
+
+`fourmolu-nix` makes a wrapper for fourmolu with settings already pass to it so
+you no longer need `fourmolu.yaml` or even to be in root of project to have
+these options set for you.
+
+## Getting started
 
 ### Flakes
 
