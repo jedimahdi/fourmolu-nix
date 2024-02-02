@@ -1,21 +1,10 @@
+{ lib, flake-parts-lib, ... }:
+let
+  inherit (lib) mkOption types;
+in
 {
-  lib,
-  flake-parts-lib,
-  ...
-}: let
-  inherit
-    (lib)
-    mkOption
-    types
-    ;
-in {
   options = {
-    perSystem = flake-parts-lib.mkPerSystemOption ({
-      config,
-      options,
-      pkgs,
-      ...
-    }: {
+    perSystem = flake-parts-lib.mkPerSystemOption ({ config, options, pkgs, ... }: {
       options = {
         fourmolu = mkOption {
           description = ''
@@ -25,10 +14,10 @@ in {
             package based on this configuration.
           '';
           type = types.submoduleWith {
-            specialArgs = {inherit pkgs;};
-            modules = [./modules];
+            specialArgs = { inherit pkgs; };
+            modules = [ ./modules ];
           };
-          default = {};
+          default = { };
         };
       };
     });

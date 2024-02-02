@@ -1,14 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  inherit
-    (lib)
-    mkOption
-    types
-    ;
+{ config, lib, pkgs, ... }:
+let
+  inherit (lib) mkOption types;
   settingsSubmodule = types.submodule {
     options = {
       indentation = mkOption {
@@ -20,7 +12,7 @@
         '';
       };
       column-limit = mkOption {
-        type = types.either (types.enum ["none"]) types.ints.positive;
+        type = types.either (types.enum [ "none" ]) types.ints.positive;
         default = "none";
         example = 80;
         description = ''
@@ -28,7 +20,7 @@
         '';
       };
       function-arrows = mkOption {
-        type = types.enum ["trailing" "leading" "leading-args"];
+        type = types.enum [ "trailing" "leading" "leading-args" ];
         default = "trailing";
         example = "leading";
         description = ''
@@ -36,14 +28,14 @@
         '';
       };
       comma-style = mkOption {
-        type = types.enum ["trailing" "leading"];
+        type = types.enum [ "trailing" "leading" ];
         default = "leading";
         description = ''
           How to place commas in multi-line lists, records, etc.
         '';
       };
       import-export-style = mkOption {
-        type = types.enum ["trailing" "leading" "diff-friendly"];
+        type = types.enum [ "trailing" "leading" "diff-friendly" ];
         default = "diff-friendly";
         example = "leading";
         description = ''
@@ -72,42 +64,42 @@
         '';
       };
       haddock-style = mkOption {
-        type = types.enum ["single-line" "multi-line" "multi-line-compact"];
+        type = types.enum [ "single-line" "multi-line" "multi-line-compact" ];
         default = "multi-line";
         description = ''
           How to print Haddock comments
         '';
       };
       haddock-style-module = mkOption {
-        type = types.enum ["single-line" "multi-line" "multi-line-compact"];
+        type = types.enum [ "single-line" "multi-line" "multi-line-compact" ];
         default = "multi-line";
         description = ''
           How to print module docstring
         '';
       };
       let-style = mkOption {
-        type = types.enum ["auto" "inline" "newline" "mixed"];
+        type = types.enum [ "auto" "inline" "newline" "mixed" ];
         default = "auto";
         description = ''
           Styling of let blocks
         '';
       };
       in-style = mkOption {
-        type = types.enum ["right-align" "left-align" "no-space"];
+        type = types.enum [ "right-align" "left-align" "no-space" ];
         default = "right-align";
         description = ''
           How to align the 'in' keyword with respect to the 'let' keyword
         '';
       };
       single-constraint-parens = mkOption {
-        type = types.enum ["auto" "always" "never"];
+        type = types.enum [ "auto" "always" "never" ];
         default = "always";
         description = ''
           Whether to put parentheses around a single constraint
         '';
       };
       unicode = mkOption {
-        type = types.enum ["detect" "always" "never"];
+        type = types.enum [ "detect" "always" "never" ];
         default = "never";
         description = ''
           Output Unicode syntax
@@ -122,21 +114,22 @@
       };
       extensions = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = ''
           List of ghc extensions to pass to fourmolu
         '';
       };
       options = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = ''
           Fourmolu options to pass to wrapped fourmolu
         '';
       };
     };
   };
-in {
+in
+{
   options = {
     package = mkOption {
       type = types.package;
@@ -151,7 +144,7 @@ in {
       description = ''
         fourmolu configuration
       '';
-      default = {};
+      default = { };
     };
     wrapper = mkOption {
       description = ''
@@ -197,7 +190,7 @@ in {
         "--respectful"
         (lib.boolToString config.settings.respectful)
       ]
-      ++ builtins.concatMap (e: ["--ghc-opt" "-X${e}"]) config.settings.extensions;
+      ++ builtins.concatMap (e: [ "--ghc-opt" "-X${e}" ]) config.settings.extensions;
     wrapper = pkgs.writeShellScriptBin "fourmolu" ''
       exec ${config.package}/bin/fourmolu ${builtins.concatStringsSep " " config.settings.options} "$@"
     '';
