@@ -154,9 +154,17 @@ in
       defaultText = lib.literalMD "wrapped `fourmolu` command";
       readOnly = true;
     };
+    devShell = mkOption {
+      type = types.package;
+      description = lib.mdDoc "A development shell with fourmolu installed.";
+      readOnly = true;
+    };
   };
 
   config = {
+    devShell = pkgs.mkShell {
+      nativeBuildInputs = [ config.wrapper ];
+    };
     settings.options =
       [
         "--indentation"
