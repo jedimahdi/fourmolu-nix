@@ -21,6 +21,7 @@
             config.treefmt.build.devShell
           ];
         };
+        packages.docs = import ../docs { inherit pkgs flake-parts; };
       };
     };
 }

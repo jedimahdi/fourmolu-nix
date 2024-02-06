@@ -1,0 +1,8 @@
+[book]
+title = "Fourmolu-nix"
+language = "en"
+
+[output.html]
+site-url = "/fourmolu-nix/"
+git-repository-url = "https://github.com/jedimahdi/fourmolu-nix"
+edit-url-template = "https://github.com/jedimahdi/fourmolu-nix/edit/master/docs/{path}"
