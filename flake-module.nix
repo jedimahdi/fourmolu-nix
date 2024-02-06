@@ -20,6 +20,9 @@ in
           default = { };
         };
       };
+      config = lib.optionalAttrs (options ? treefmt) {
+        treefmt.programs.fourmolu.package = lib.mkDefault config.fourmolu.wrapper;
+      };
     });
   };
 }
