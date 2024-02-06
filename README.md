@@ -1,10 +1,13 @@
-# fourmolu-nix
+# Fourmolu-nix
 
 `fourmolu-nix` makes a wrapper for fourmolu with settings already pass to it so
 you no longer need `fourmolu.yaml` or even to be in root of project to have
 these options set for you.
 
 ## Getting started
+
+For creating the wrapper, you can use `mkWrapper` function from lib which takes
+pkgs and configuration and returns wrapped fourmolu with the provided configuration.
 
 ### Flakes
 
@@ -47,6 +50,11 @@ these options set for you.
 
 ### Flake-parts
 
+With flake-parts you don't need to call `mkWrapper`, just add
+`inputs.fourmolu-nix.flakeModule` to list of imports.
+
+Fourmolu wrapper will be accessible via `config.fourmolu.wrapper`.
+
 ```nix
 {
   inputs = {
@@ -82,9 +90,5 @@ these options set for you.
 }
 ```
 
-#### treefmt-nix
-
-```nix
-programs.fourmolu.enable = true;
-programs.fourmolu.package = config.fourmolu.wrapper;
-```
+Note: `fourmolu-nix` will automatically set the wrapper package for `treefmt-nix`
+fourmolu program.
