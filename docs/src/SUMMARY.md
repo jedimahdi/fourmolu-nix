@@ -1,2 +1,2 @@
 [Introduction](README.md)
-[Options](fourmolu.md)
+[Options](options.md)

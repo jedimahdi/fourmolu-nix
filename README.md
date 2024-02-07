@@ -92,3 +92,7 @@ Fourmolu wrapper will be accessible via `config.fourmolu.wrapper`.
 
 Note: `fourmolu-nix` will automatically set the wrapper package for `treefmt-nix`
 fourmolu program.
+
+## Configuration
+
+See [options](https://jedimahdi.github.io/fourmolu-nix/options.html) for the full list of configs.

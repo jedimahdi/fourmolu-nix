@@ -28,7 +28,7 @@ pkgs.stdenvNoCC.mkDerivation {
 
     # The "declared by" links point to a file which only exists when the docs
     # are built locally. This removes the links.
-    sed '/*Declared by:*/,/^$/d' <${fourmolu.optionsCommonMark} >>src/fourmolu.md
+    sed '/*Declared by:*/,/^$/d' <${fourmolu.optionsCommonMark} >>src/options.md
   '';
 
   buildPhase = ''
